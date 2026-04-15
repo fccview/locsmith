@@ -12,6 +12,7 @@ scan() {
 
     local loc
     loc="$(wc -l < "$file" 2>/dev/null || printf "0")"
+    loc="${loc// /}"
 
     if [[ "$loc" =~ ^[0-9]+$ ]] && (( loc > 0 )); then
       (( total_loc += loc ))
