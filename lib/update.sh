@@ -5,7 +5,7 @@ run_update() {
   log_info "Checking for updates..."
 
   local latest_tag
-  latest_tag="$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest" | grep -oP '[^/]+$')"
+  latest_tag="$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest" | sed 's|.*/||')"
   if [[ -z "$latest_tag" ]]; then
     printf "Failed to resolve latest version.\n" >&2
     return 1
