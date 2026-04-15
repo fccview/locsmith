@@ -1,6 +1,0 @@
-.bundle
-vendor/bundle
-coverage
-.ruby-version
-.gem
-*.gem
