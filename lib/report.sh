@@ -1,8 +1,14 @@
 print_top_files() {
-  printf "Top 10 largest files:\n"
-  sort -nr "$tmp_file" | head -n 10 | while read -r loc path; do
+  local found=0
+  while read -r loc path; do
+    (( loc < 400 )) && break
+    if (( found == 0 )); then
+      printf "Files above 400 lines of code:\n"
+      found=1
+    fi
     printf "  %6s lines  %s\n" "$loc" "$path"
-  done
+  done < <(sort -nr "$tmp_file")
+  (( found == 0 )) && printf "Congrats, none of the files within the project exceed 400 lines of code.\n"
 }
 
 print_extension_breakdown() {
