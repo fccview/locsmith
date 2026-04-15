@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+build
+out
+.turbo
+.vercel
+coverage
+.eslintcache
+.pnp.*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store

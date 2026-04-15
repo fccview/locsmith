@@ -1,0 +1,37 @@
+name: Build and Release Tarball
+
+on:
+  push:
+    tags: ["*"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v4
+
+      - name: Versioning
+        id: version
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Tarballing hard
+        run: |
+          mkdir -p release/locsmith
+          cp index.sh release/locsmith/
+          cp -r lib release/locsmith/
+          cd release
+          tar -czf locsmith_${{ steps.version.outputs.version }}.tar.gz locsmith
+          sha256sum locsmith_${{ steps.version.outputs.version }}.tar.gz > locsmith_${{ steps.version.outputs.version }}.tar.gz.sha256
+
+      - name: Attaching and praying it works
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/locsmith_${{ steps.version.outputs.version }}.tar.gz
+            release/locsmith_${{ steps.version.outputs.version }}.tar.gz.sha256
+          tag_name: ${{ steps.version.outputs.version }}
